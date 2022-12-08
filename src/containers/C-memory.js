@@ -1,17 +1,18 @@
 import { v4 as uuidv4 } from 'uuid';
 
-class memory {
+class Cmemory {
     constructor(){
         this.array = [];
     }
     //devolver valores en save y update
+    //sacar los try
     async save(obj){
         try {
             Object.assign(obj, {
-                code: uuidv4()
+                id: uuidv4()
             });
             this.array.push(obj);
-            console.info(`${obj} was saved with the id: ${obj.code}`);
+            return obj;
         } catch(err) {
             console.error(err);
             return {
@@ -31,9 +32,9 @@ class memory {
             };
         }
     }
-    async getById(code){
+    async getById(id){
         try {
-            const result = this.array.filter(i => i.code = code);
+            const result = this.array.filter(i => i.id = id);
             return result;
         } catch(err) {
             console.error(err);
@@ -43,13 +44,12 @@ class memory {
             };
         }
     }
-    async update(update, code){
+    async update(update, id){
         try {
-            update.code = code;
-            const result = this.array.filter(i => i.code != code);
+            update.id = id;
+            const result = this.array.filter(i => i.id != id);
             result.push(update);
             this.array = result;
-            console.info(`${code} was update`);
             return result;
         } catch(err) {
             console.error(err);
@@ -59,10 +59,9 @@ class memory {
             };
         }
     };
-    async supr(code){
+    async supr(id){
         try {
-            this.array.filter(i => i.code != code);
-            console.info(`${code} was delete`);
+            this.array.filter(i => i.code != id);
         } catch(err) {
             console.error(err);
             return {
@@ -73,3 +72,5 @@ class memory {
     }
 
 }
+
+export default Cmemory;

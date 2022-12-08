@@ -1,11 +1,11 @@
-class firebase {
+class Cfirebase {
     constructor(){
     }
     save(){
 
     }
     getAll(){
-
+        
     }
     getById(){
         
@@ -18,3 +18,5 @@ class firebase {
     }
 
 }
+
+export default Cfirebase;
