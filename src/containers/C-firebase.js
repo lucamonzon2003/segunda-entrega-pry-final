@@ -1,7 +1,7 @@
 class Cfirebase {
     constructor(){
     }
-    save(){
+    create(){
 
     }
     getAll(){

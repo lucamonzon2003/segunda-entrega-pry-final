@@ -6,7 +6,7 @@ class Cmongodb {
     constructor(model){
         this.model = model
     }
-    async save(obj){
+    async create(obj){
         const newObj = await this.model.create(obj)
         return newObj
     }

@@ -1,22 +1,24 @@
-import { get } from "mongoose";
-import fs from ('fs')
+import fs from ('fs');
+import { v4 as uuid } from "uuid";
+import _ from "lodash";
+
 
 class Cfilesystem {
     constructor(name){
         this.name = name;
     }
-    async save(obj){
+    async create(obj){
         try {
             const data = await fs.readFile(`./src/storage/${this.name}.json`, {
                 encoding: "utf-8",
             });
             const dataP = await JSON.parse(data);
             Object.assign(obj, {
-                id: uuidv4()
+                id: uuid()
             });
             dataP.push(obj)
             await fs.writeFile(`./src/storage/${this.name}.json`, JSON.stringify(dataP, null, 2));
-            console.info(`${obj} was saved with the id: ${obj.id}`);
+            return obj;
         } catch(err) {
             console.error(err);
             return {
@@ -45,7 +47,8 @@ class Cfilesystem {
             const data = await this.getAll();
             let dataP = await JSON.parse(data);
             let result = dataP.find(i => i.id == id);
-            return (result);
+            if (_.isNil(result)) throw new Error("item not found");
+            return result;
         } catch(err) {
             console.error(err);
             return {
@@ -54,14 +57,16 @@ class Cfilesystem {
             };
         }
     }
-    async update(obj, id){
+    async update(update, id){
         try {
+            update.id = id;
             const data = await this.getAll();
             let dataP = await JSON.parse(data);
             let result = dataP.filter(i => i.id != id);
-            result.push(obj);
+            if (_.isNil(result)) throw new Error("item not found");
+            result.push(update);
             await fs.writeFile(`./src/storage/${this.name}.json`, JSON.stringify(result, null, 2));
-            console.info(`${id} was update`);
+            return result;
         } catch(err) {
             console.error(err);
             return {
@@ -76,7 +81,6 @@ class Cfilesystem {
             let dataP = await JSON.parse(data);
             let result = dataP.filter(i => i.id != id);
             await fs.writeFile(`./src/storage/${this.name}.json`, JSON.stringify(result, null, 2));
-            console.info(`${id} was delete`);
         } catch(err) {
             console.error(err);
             return {

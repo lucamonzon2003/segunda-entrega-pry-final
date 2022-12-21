@@ -6,7 +6,7 @@ class Cmemory {
     }
     //devolver valores en save y update
     //sacar los try
-    async save(obj){
+    async create(obj){
         try {
             Object.assign(obj, {
                 id: uuidv4()
@@ -35,6 +35,7 @@ class Cmemory {
     async getById(id){
         try {
             const result = this.array.filter(i => i.id = id);
+            if (_.isNil(result)) throw new Error("item not found");
             return result;
         } catch(err) {
             console.error(err);
@@ -48,6 +49,7 @@ class Cmemory {
         try {
             update.id = id;
             const result = this.array.filter(i => i.id != id);
+            if (_.isNil(result)) throw new Error("item not found");
             result.push(update);
             this.array = result;
             return result;
